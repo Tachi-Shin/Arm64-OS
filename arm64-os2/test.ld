@@ -29,20 +29,12 @@ SECTIONS
     . = ALIGN(4096);
     PROVIDE(_data_start = .);
     *(.data .data.*)
-  } >ram AT>ram
-
-  .sdata : {
-    *(.sdata .sdata.*)
     PROVIDE(_data_end = .);
   } >ram AT>ram
 
-  .sbss : {
+  .bss :{
     . = ALIGN(16);
     PROVIDE(_bss_start = .);
-    *(.sbss .sbss.*)
-  } >ram AT>ram
-
-  .bss :{
     *(.bss .bss.*)
     . = ALIGN(16);
     PROVIDE(_bss_end = .);
