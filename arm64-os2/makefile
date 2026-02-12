@@ -1,4 +1,4 @@
-ARCH_PREFIX = aarch64-linux-gnu-
+ARCH_PREFIX =
 CC = $(ARCH_PREFIX)gcc
 LD = $(ARCH_PREFIX)ld
 NM = $(ARCH_PREFIX)nm
