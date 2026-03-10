@@ -1,4 +1,3 @@
-
     .section .reset,"ax",@progbits
     .globl _start
 _start:
@@ -7,4 +6,3 @@ _start:
 
     bl main
     b .
-

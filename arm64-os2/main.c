@@ -109,12 +109,6 @@ void print_message(const char* s, ...)
     va_end(ap);
 }
 
-static void put_char(char c)
-{
-    volatile unsigned char * const uart = (unsigned char *)0x10000000U;
-    *uart = c;
-}
-
 void Task1(void)
 {
     while (1) {
