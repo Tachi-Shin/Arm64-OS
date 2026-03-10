@@ -16,7 +16,7 @@ SECTIONS
     *(.text .text.*)
     PROVIDE(_text_end = .);
   } >ram AT>ram
-	_etext = .;
+    _etext = .;
 
   .rodata : {
     PROVIDE(_rodata_start = .);
