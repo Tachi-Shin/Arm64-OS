@@ -1,0 +1,7 @@
+fatload mmc 0:1 0x4000000 arm64os.img
+fatload mmc 0:1 0x3000000 bcm2711-rpi-4-b.dtb
+fdt addr 0x3000000                                                              
+fdt resize 0x1000
+bootm 0x4000000 - 0x3000000
+go 0x4000000
+
