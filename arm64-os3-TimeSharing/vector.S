@@ -28,7 +28,7 @@ curr_el_spx_sync:       // Synchronous
 
     .balign 0x80
 curr_el_spx_irq:        // IRQ/vIRQ
-    b timer_handler
+    b IrqHandler
 
     .balign 0x80
 curr_el_spx_fiq:        // FIQ/vFIQ
@@ -77,13 +77,15 @@ undefined_handler:
     eret
 
 
-.global timer_handler
-	.balign 0x80
-timer_handler:
-// まず x18, x30（LR）を保存
+.global IrqHandler
+    .balign 0x80
+IrqHandler:
+    // ハンドラ起動時、割り込まれたコンテキストのPCとPSTATEの値がそれぞれELR_EL1とSPSR_EL1に退避される
+
+    //  x18, x30（LR）を退避
     stp x18, x30, [sp, #-16]!
 
-    // caller-saved を保存
+    // caller-savedレジスタを退避
     stp x0,  x1,  [sp, #-16]!
     stp x2,  x3,  [sp, #-16]!
     stp x4,  x5,  [sp, #-16]!
@@ -94,9 +96,19 @@ timer_handler:
     stp x14, x15, [sp, #-16]!
     stp x16, x17, [sp, #-16]!
 
+    // ELR_EL1とSPSR_EL1の値を退避
+    mrs x0, ELR_EL1
+    mrs x1, SPSR_EL1
+    stp x0, x1, [sp, #-16]!
+
     bl  InterruptHandler
 
-    // 逆順で復元
+    // ELR_EL1とSPSR_EL1の値を復元
+    ldp x0, x1, [sp], #16
+    msr ELR_EL1, x0
+    msr SPSR_EL1, x1
+
+    // 逆順でcaller-savedレジスタを復元
     ldp x16, x17, [sp], #16
     ldp x14, x15, [sp], #16
     ldp x12, x13, [sp], #16
@@ -109,4 +121,6 @@ timer_handler:
 
     // 最後に x18, x30 を復元
     ldp x18, x30, [sp], #16
+
+    // eret命令により、ELR_EL1とSPSR_EL1の値がそれぞれPCとPSTATEに書き戻される
     eret
