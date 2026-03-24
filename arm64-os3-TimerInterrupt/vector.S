@@ -28,7 +28,7 @@ curr_el_spx_sync:       // Synchronous
 
     .balign 0x80
 curr_el_spx_irq:        // IRQ/vIRQ
-    b timer_handler
+    b IrqHandler
 
     .balign 0x80
 curr_el_spx_fiq:        // FIQ/vFIQ
@@ -77,9 +77,9 @@ undefined_handler:
     eret
 
 
-.global timer_handler
+.global IrqHandler
 	.balign 0x80
-timer_handler:
+IrqHandler:
 // まず x18, x30（LR）を保存
     stp x18, x30, [sp, #-16]!
 
