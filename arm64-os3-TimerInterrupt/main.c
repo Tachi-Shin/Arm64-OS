@@ -201,7 +201,6 @@ static void StartTimer(void)
     ActivateInterrupt(GEN_TIMER_INTID, 16U, FALSE);
     WriteSysReg(CNTP_CVAL_EL0, ReadSysReg(CNTPCT_EL0) + TICK_CYCLES );
     WriteSysReg(CNTP_CTL_EL0, CNTP_CTL_EL0_ENABLE);
-    EnableInt();
 }
 
 void main(void)
@@ -216,5 +215,6 @@ void main(void)
     InitTask(TASK3, Task3);
 
     CurrentTask = TASK1;
+    EnableInt();
     load_context(&TaskControl[CurrentTask].sp);
 }
